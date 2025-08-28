@@ -96,7 +96,7 @@ sem --> |define|agg
 gold --> |define|agg
 ```    
 -------------------------------------------------------------------------------------------------------
-#### Internal Lakehouse Architecture
+## Internal Lakehouse Architecture
 ```mermaid
 flowchart LR
 subgraph FE[Data Sources]
@@ -236,7 +236,7 @@ MDEP --> PRD
 MDEP --> Tools
 ```    
 -------------------------------------------------------------------------------------------------------
-### Operational systems overview
+## Operational systems overview
 
 ```mermaid
 graph TD
