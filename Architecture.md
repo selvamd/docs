@@ -56,8 +56,47 @@ graph LR
   DWH --> BI
   DWH --> AIML
 ```    
+---------------------------------------------------------------------------------------------
+## Data Transformations in Lakehouse
+
+```mermaid
+graph LR
+
+subgraph integ[Source Integration Layer]
+end
+
+subgraph land[Landing Zone]
+end
+
+subgraph raw[Raw/Bronze Layer]
+end
+
+subgraph cured[Curated/Silver Layer]
+end
+
+subgraph gold[Transformed/Gold Layer]
+end
+
+subgraph sem[Sematic/Aggregated]
+end
+
+subgraph agg[Data Product]
+    direction LR 
+    Product1
+    Product2
+    Product3
+end
+
+integ --> |Ingest|land
+land --> |TDQ/BDQ|raw
+raw --> |model|cured
+cured --> |enrich|gold
+gold --> |summarize|sem
+sem --> |define|agg
+gold --> |define|agg
+```    
 -------------------------------------------------------------------------------------------------------
-#### Lakehouse Internal Architecture
+#### Internal Lakehouse Architecture
 ```mermaid
 flowchart LR
 subgraph FE[Data Sources]
@@ -197,7 +236,7 @@ MDEP --> PRD
 MDEP --> Tools
 ```    
 -------------------------------------------------------------------------------------------------------
-### Conceptual Dataflow captured without Data Integration Middleware
+### Operational systems overview
 
 ```mermaid
 graph TD
@@ -286,43 +325,4 @@ CDP --> |Profile|Customer
 PIM --> Ecommerce
 PIM --> POS
 PIM --> PX
-```    
----------------------------------------------------------------------------------------------
-### Conceptual Data processing in Lakehouse
-
-```mermaid
-graph LR
-
-subgraph integ[Source Integration Layer]
-end
-
-subgraph land[Landing Zone]
-end
-
-subgraph raw[Raw/Bronze Layer]
-end
-
-subgraph cured[Curated/Silver Layer]
-end
-
-subgraph gold[Transformed/Gold Layer]
-end
-
-subgraph sem[Sematic/Aggregated]
-end
-
-subgraph agg[Data Product]
-    direction LR 
-    Product1
-    Product2
-    Product3
-end
-
-integ --> |Ingest|land
-land --> |TDQ/BDQ|raw
-raw --> |model|cured
-cured --> |enrich|gold
-gold --> |summarize|sem
-sem --> |define|agg
-gold --> |define|agg
 ```    
