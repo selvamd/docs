@@ -197,3 +197,132 @@ MDEP --> PRD
 MDEP --> Tools
 ```    
 -------------------------------------------------------------------------------------------------------
+### Conceptual Dataflow captured without Data Integration Middleware
+
+```mermaid
+graph TD
+
+%% Core Layers
+subgraph ERP[Oracle Fusion ERP]
+    
+    subgraph MDM[Master Data Management]
+        Branch
+        Customer
+        PR[Product<br>Supplier]
+    end
+
+    subgraph Human Resources
+        HCM[Oracle HCM]
+    end
+
+    subgraph Financials
+        OracleFCCS[Oracle FCCS]
+        OracleFIN[Oracle AR AP GL]
+    end
+
+    subgraph OPER[Enterprise Operations]
+        direction LR
+        ORD[Purchase/Sales Order]
+        WER[Warehouse Operations]
+        TRA[Transportation Logistics]
+    end
+end
+
+subgraph PX[PriceFx]
+    direction LR
+    PRPX[Product <br> Pricing]
+    INPX[Inventory <br> Pricing]
+    CSPX[Customer <br> Pricing]
+end
+
+subgraph SCM[Supply Chain Management]
+    O9[O9 Supply Chain Planning]
+    OMS[Manhattan <br> OMS]
+    WMS[Manhattan <br> WMS]
+    TMS[Blue Yonder <br> TMS]
+end
+
+subgraph SALE[Sales & Fulfillment]
+    Ecommerce[ECommerce <br> Digital Sales]
+    PIM[Syndigo - PIM]
+    POS[Point Of Sale]
+    OneRail[OneRail <br> Final Mile]
+end
+
+subgraph CDP[Customer Data Platform]
+    direction LR
+    PROF[Profile <br> Preferences]
+    CO[Onboarding<br>Retention]
+    CE[Engagements<br>Outreach]
+    CP[Personalization]
+    CS[CrossSell <br> Upsell]
+end
+
+O9 --> |Purchase Req|OMS
+O9 <--> |Prices|PX
+OMS --> |Delivery|WMS
+OMS --> |Shipments|TMS
+OMS --> |Order|OPER
+WMS --> |Inventory|OPER
+TMS --> |Transport|OPER
+OMS --> |Invoice|OracleFIN
+
+%% Connections - Sales
+Ecommerce --> OMS
+POS --> OMS
+PX --> OMS
+PX --> Ecommerce
+PX --> POS
+
+%% Customer Data
+CDP --> Ecommerce
+CDP --> |Preferences|OneRail
+CDP --> POS
+CDP --> PX
+OMS --> OneRail
+CDP --> |Profile|Customer
+
+%% PIM
+PIM --> Ecommerce
+PIM --> POS
+PIM --> PX
+```    
+---------------------------------------------------------------------------------------------
+### Conceptual Data processing in Lakehouse
+
+```mermaid
+graph LR
+
+subgraph integ[Source Integration Layer]
+end
+
+subgraph land[Landing Zone]
+end
+
+subgraph raw[Raw/Bronze Layer]
+end
+
+subgraph cured[Curated/Silver Layer]
+end
+
+subgraph gold[Transformed/Gold Layer]
+end
+
+subgraph sem[Sematic/Aggregated]
+end
+
+subgraph agg[Data Product]
+    direction LR 
+    Product1
+    Product2
+    Product3
+end
+
+integ --> |Ingest|land
+land --> |TDQ/BDQ|raw
+raw --> |model|cured
+cured --> |enrich|gold
+gold --> |summarize|sem
+sem --> |define|agg
+gold --> |define|agg
+```    
