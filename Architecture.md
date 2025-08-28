@@ -1,9 +1,9 @@
 ## Enterprise Architecture
 
-The following diagram describes proposed enterprise system architecture for QXO. 
+The following diagram describes proposed enterprise system architecture. 
 
 - Diagram shows a set of systems & processes that are operational and others that are analytical in nature. 
-This is not cut in stone as sometimes operational systems do need to do some domain specific analytics
+Operational systems do have analytics capabilities
 
 - When operations spread across systems, it is unavoidable to have some functional dependencies on what is 
 happening in other systems. This creates a need for robust and timely data sharing.  
@@ -21,11 +21,7 @@ This nearly monolithic solution minimized the data exchange needs so a mature da
 - When we modernize, this will not work. The solutions we are looking at are more sophisticated and specialized, 
 and whether we build or buy, will be more modular and will require a very mature Enterprise Application Integration (EAI) strategy 
 
-- When we decide to buy a product instead of building, it is important to think about the customizability or openness of the solution. 
-Vendors interest is in generalizing the problems and solving them to maximize their software sales. Our interest is in finding the edges that others donot have or see and deliver innovations to scale growth and create margin expansion. These are inherently at cross roads to each other. 
-
-- However, the fineline we have to walk, is to not re-invent the wheel and take out of the box solutions where we can if it provides strategic accelerations but make sure we donot get locked in and retain the ability to override things when we want to customize. Otherwise today's innovation becomes tomorrow's technical debt. 
-
+## Logical Architecture
 
 ```mermaid
 graph LR
@@ -232,42 +228,24 @@ MDEP --> Tools
     - Create schema consistency and standardization for self-service BI capabilities
     - Stitch data from external/internal sources for augmenting operational (leads) 
         and analytic (forecasting) capabilities 
-    - Consolidate data from multiple future business aquisitions for unified analysis, 
+    - Consolidate data from multiple potential business aquisitions for unified analysis, 
         reporting and consumption purposes
-    - Decoupled and independent data integration process from operational integration during M&A 
-    - Enable systematic historical analysis and cross sectional analysis for studying 
-        growth and evolution
+    - Enable systematic historical data integration for timeseries and cross sectional analysis
 
 - Technical goals
-    - Create a functional abstraction based data model and supporting API led ingestion process 
+    - Create functional abstraction based data model and supporting API led ingestion process 
     - Support multiple forms of ingestion as well as consumption - Batch/Realtime and Snapshot/Incremental
     - Datamodel driven quality checks and governance in addition to TDQ, BDQ  
     - Implementing reliable entity management supported by static, universal, non-recycled keys 
     - Handling key splits and merges with historical and ongoing data consistency  
         - Use of surrogate warehouse keys to decouple from operational systems dependency 
-    - Adopting proper change data capture (CDC) strategy to store continious history 
+    - Proper change data capture (CDC) strategy to store continious history 
     - Ensuring a managed and controlled ecosystem with 
         - Action/state consistency 
         - Leave no change untracked 
             - Incremental Write-ahead with no overwrites
             - History on both data/schema evolution
             - No data without metadata policy 
-
-- Stages of intelligence in a data warehouse: 
-    - Gathering and organizing data on activities within the system
-    - Summarize and provide overview on what is happening (Descriptive)
-    - Define metrics, KPIs that define the state/condition of the business entities
-    - Build benchmarks around it to distinguish between normal vs abnormal changes
-    - Observe and analyze to answer what is happening (Diagnostic)
-    - Define targets and manage reactively towards achieving that
-    - Analyze correlation and causation of actions and outcomes (Predictive) 
-    - Predict future events using the metrics on activities observed
-    - Adust and course correct pro-actively based on predictions (Prescriptive)
-    - In that sense
-        - Datawarehouse teams, by collecting/recording data, are building sensors
-        - Reporting teams, by analyzing data, are making the system sentient
-        - AI teams, by adding reasoning and predicting ability, are making the system intelligent
-    - Note that this is a step by step progression and progress in each step depends on successful execution of the previous step
 
 - System Integration goals
     - One of our known strategies is to grow the business through integrations and aquisitions
@@ -300,7 +278,8 @@ MDEP --> Tools
     - Converged Architecture: Modern warehouses often integrate or coexist with data lakes, 
     - forming lakehouse solutions (e.g., Databricks, Snowflake).
 
-- Open Formats: Support for Delta Lake, Iceberg, or Apache Hudi for managing large-scale, versioned data.
+- Support Open Formats: Support for Delta Lake, Iceberg, or Apache Hudi for
+  managing large-scale, versioned data.
 
 - Strong Security and Governance
     - End-to-End Encryption: Both at rest and in transit.
@@ -331,7 +310,7 @@ MDEP --> Tools
     - SQL-first Interfaces: Core support for SQL, but also extensible to Python, R, or other languages.
     - BI Tool Compatibility: Integrates natively with Looker, Tableau, Power BI, etc.
 ---------------------------------------------------------------------------------------------------------
-#### GCP Data platform - Databricks level feature Parity
+#### GCP Data platform - Databricks like feature Parity
 - Google Cloud Storage
     - Data Lakehouse Storage for raw/curated data lake storage
 - BigQuery
@@ -362,30 +341,8 @@ MDEP --> Tools
 - BI & Visualization
     - Looker - Business intelligence, dashboards, and visualization
 ---------------------------------------------------------------------------------
-#### Datawarehouse Project plan 
-- Team and Staffing
-    - Project Owner (Me)
-    - Solutions Architect (Me)
-    - Product Owner (Stephanie/Shawn)
-    - Business SME (Stephanie/Shawn)
-    - Data SME (Mike Gazi/Mary)
-    - Line of credit model
-        - Data Analysts
-        - Data Engineers 
-        - Quality Engineer
-    - Skills (Contract to Hire Model)
-        - Knowledge, Communication 
-        - Commitment, Productivity 
-- Cost estimates
-    - Platform Costs
-        - Initial Development
-        - Perpetual Costs    
-    - Data Onboarding
-        - Initial Development
-        - Perpetual Costs    
----------------------------------------------------------------------------------
 #### Tactical Work 
-- Centralized MDM - Customer and Product Data stitching: 
+- Centralizing MDM - Customer and Product Data stitching: 
     - In-progress solutions
         - Ashwin methodology (Veracity)
         - Syndigo methodology
@@ -396,30 +353,3 @@ MDEP --> Tools
     - Cleanup plan for existing data 
     - Prevention plan for further data screwups
 ---------------------------------------------------------------------------------
-#### Design for a data product
-
-- Product Owner
-    - What is the output ? Who are the consumers ?
-    - What are the required inputs? Do we have it all ? 
-    - Can they get it today by other means ?
-    - If yes, why build a new solution? 
-    - Is there ROI on the cost/time investment ?
-    - Get the management approval for the product scope/FRS
-
-- Project Owner 
-    - What are the various tasks involved?
-    - How many man-hours of effort involved?
-    - Team size and skill sets 
-    - Task inter-dependencies and order of execution
-    - How do split the work and milestone optimally?
-    - What are the deliverables at each milestone?  
-    - Get the management approval for the project plan 
-        - Budget, Timelines and Staffing Plan
-     
-- Solution Owner
-    - Identify the NFRs - add to the requirements
-    - Technical Architecture and Design proposal
-    - Execution responsibility - Coding, testing, User Acceptance and Production (SDLC)
-    - Responsible if it doesnot work, is buggy or doesnot meet the requirements
-
--------------------------------------------------------------------------------------------------------
