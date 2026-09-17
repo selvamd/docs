@@ -1,4 +1,4 @@
-# QXO Data Platform High Level Design
+# Data Platform High Level Design
 
 ## Table of Contents
 
